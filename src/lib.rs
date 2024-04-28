@@ -5,7 +5,7 @@
 
 #![no_std]
 /// A statically sized 2-dimensional array
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 pub struct Grid<const W: usize, const H: usize, T> {
     pub data: [[T; W]; H],
 }
@@ -27,7 +27,13 @@ impl<const W: usize, const H: usize, T> From<[[T; W]; H]> for Grid<W, H, T> {
     }
 }
 
-impl<const W: usize, const H: usize, T> Grid<W, H, T> {
+impl<const W: usize, const H: usize, T: Copy> Grid<W, H, T> {
+    pub fn new(value: T) -> Self {
+        Self {
+            data: [[value; W]; H],
+        }
+    }
+
     pub fn iter(&self) -> impl Iterator<Item = (usize, usize, &T)> {
         self.data
             .iter()
